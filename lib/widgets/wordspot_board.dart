@@ -18,7 +18,9 @@ class _WordspotBoardState extends State<WordspotBoard> {
       List.generate(6, (_) => List.filled(5, Colors.transparent));
   List<List<Color>> borderColors =
       List.generate(6, (_) => List.filled(5, Color(0XFF757575)));
+  bool gameOver = false;
   void onKeyPressed(String key) {
+    if (gameOver) return;
     setState(() {
       if (key == '⌫') {
         if (currentCol > 0) {
@@ -33,6 +35,7 @@ class _WordspotBoardState extends State<WordspotBoard> {
               cellColors[currentRow][i] = Colors.green;
             }
             _showMessage('¡Felicidades! Has adivinado la palabra.');
+            gameOver = true;
           } else {
             _updateCellColors(guessedWord);
             if (currentRow < 5) {
@@ -40,6 +43,7 @@ class _WordspotBoardState extends State<WordspotBoard> {
               currentCol = 0;
             } else {
               _showMessage('¡Oh no! La palabra era $wordOfTheDay.');
+              gameOver = true;
             }
           }
         }
