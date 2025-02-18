@@ -51,15 +51,35 @@ class _WordspotBoardState extends State<WordspotBoard> {
   }
 
   void _updateCellColors(String guessedWord) {
+    List<bool> wordOfTheDayLetters = List.filled(5, false);
+    List<bool> guessedWordMarked = List.filled(5, false);
+
     for (int i = 0; i < 5; i++) {
       if (guessedWord[i] == wordOfTheDay[i]) {
         cellColors[currentRow][i] = Colors.green;
         borderColors[currentRow][i] = Colors.green;
-      } else if (wordOfTheDay.contains(guessedWord[i])) {
-        cellColors[currentRow][i] = Colors.orange;
-        borderColors[currentRow][i] = Colors.orange;
-      } else {
-        cellColors[currentRow][i] = Color(0XFF757575);
+        wordOfTheDayLetters[i] = true;
+        guessedWordMarked[i] = true;
+      }
+    }
+
+    for (int i = 0; i < 5; i++) {
+      if (!guessedWordMarked[i]) {
+        for (int j = 0; j < 5; j++) {
+          if (!wordOfTheDayLetters[j] && guessedWord[i] == wordOfTheDay[j]) {
+            cellColors[currentRow][i] = Colors.orange;
+            borderColors[currentRow][i] = Colors.orange;
+            wordOfTheDayLetters[j] = true;
+            guessedWordMarked[i] = true;
+            break;
+          }
+        }
+      }
+      for (int i = 0; i < 5; i++) {
+        if (!guessedWordMarked[i]) {
+          cellColors[currentRow][i] = Color(0XFF757575);
+          borderColors[currentRow][i] = Color(0XFF757575);
+        }
       }
     }
   }
